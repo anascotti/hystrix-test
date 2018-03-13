@@ -5,10 +5,17 @@ import javax.jms.Queue;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
+import org.apache.catalina.connector.Connector;
+import org.apache.coyote.AbstractProtocol;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.tomcat.TomcatConnectorCustomizer;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
@@ -67,5 +74,31 @@ public class BankValidationApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BankValidationApplication.class, args);
+	}
+	
+	
+	// server.tomcat.max-threads=0 # Maximum amount of worker threads.
+	// server.tomcat.min-spare-threads=0 # Minimum amount of worker threads.
+	@Bean
+	public EmbeddedServletContainerFactory servletContainerFactory() {
+	    TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
+
+//	    factory.addConnectorCustomizers(new TomcatConnectorCustomizer() {
+//            @Override
+//            public void customize(Connector connector) {
+//                // TODO Auto-generated method stub
+//                connector.setAttribute("maxThreads", 100);
+//            }
+//	        
+//	    // configure some more properties
+//	    });
+	    
+
+	    factory.addConnectorCustomizers(connector -> 
+	            ((AbstractProtocol) connector.getProtocolHandler()).setMaxThreads(100));
+
+	    // configure some more properties
+
+	    return factory;
 	}
 }

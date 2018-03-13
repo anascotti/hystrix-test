@@ -40,6 +40,7 @@ public class ValidationService {
 			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
 			)
 	public DeferredResult<ValidationResponse> validate(@RequestBody ValidationRequest request) {
+	    log.info(request);
 		DeferredResult<ValidationResponse> deferred = new DeferredResult<>(restTimeout);
 		Observable<BankValidationResponse> creditObs = sendCreditRequest(request);
 		Observable<BankValidationResponse> debitObs = sendDebetRequest(request);

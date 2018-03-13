@@ -48,7 +48,7 @@
     		<version>2.0.1</version>
 		</dependency>
         <dependency>
-        	<groupId>swish.hystrix</groupId>
+        	<groupId>se.bgc.hystrix</groupId>
 			<artifactId>bank-common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>        
         </dependency>
